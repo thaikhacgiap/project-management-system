@@ -1122,12 +1122,30 @@
             document.getElementById(modalId).classList.remove('show');
         }
 
-        function saveCustomer(event) {
-            event.preventDefault();
-            alert('Khách hàng đã được lưu thành công!');
-            closeModal('customerModal');
-            loadCustomersModule();
-        }
+async function saveCustomer(event) {
+    event.preventDefault();
+
+    const data = {
+        name: document.getElementById('customerName').value,
+        contact: document.getElementById('contactPerson').value,
+        phone: document.getElementById('contactPhone').value,
+        email: document.getElementById('contactEmail').value,
+        address: document.getElementById('contactAddress').value
+    };
+
+    const { error } = await supabase
+        .from('customers')
+        .insert([data]);
+
+    if (error) {
+        console.error(error);
+        alert('Lỗi khi lưu!');
+    } else {
+        alert('Lưu thành công!');
+        closeModal('customerModal');
+        loadCustomersModule();
+    }
+}
 
         function saveProject(event) {
             event.preventDefault();
